@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">FirstJComposeProject</string>
     <string name="template_text">Compose has several useful graphics Modifiers which aid in drawing custom content. These modifiers are useful because they can be applied to any composable.</string>
+
+    <integer name="com_vk_sdk_AppId">54285788</integer>
 </resources>

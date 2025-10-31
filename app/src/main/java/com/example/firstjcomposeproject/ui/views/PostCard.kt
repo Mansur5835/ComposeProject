@@ -1,5 +1,6 @@
 package com.example.firstjcomposeproject.ui.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,41 +28,54 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.firstjcomposeproject.PostCardViewModel
 import com.example.firstjcomposeproject.R
+import com.example.firstjcomposeproject.domein.FeedPost
+import com.example.firstjcomposeproject.domein.StatisticItem
+import com.example.firstjcomposeproject.domein.StatisticType
+import com.example.firstjcomposeproject.getItemByType
 import com.example.firstjcomposeproject.ui.theme.FirstJComposeProjectTheme
 import java.time.LocalTime
 
 @Composable
-fun PostCard(painter: Painter? = null) {
+fun PostCard(
+    modifier: Modifier = Modifier,
+    post: FeedPost,
+    onClick: (type: StatisticType) -> Unit
+) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            Header(painter = painter)
+            Header(post)
             Spacer(modifier = Modifier.height(8.dp))
-            Body(
-                painter = painter
+            Body(post)
+            Spacer(modifier = Modifier.height(8.dp))
+            Footer(
+                post.statisticItems,
+                onClick = onClick
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Footer()
         }
     }
 }
 
 
 @Composable
-private fun Footer() {
+private fun Footer(statisticItems: List<StatisticItem>, onClick: (type: StatisticType) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
 
         IconsWithText(
             icon = R.drawable.eye,
-            text = "916",
-            modifier = Modifier.weight(1F)
+            text = statisticItems.getItemByType(StatisticType.VIEW).count.toString(),
+            modifier = Modifier.weight(1F),
+            onClick = {
+                onClick.invoke(StatisticType.VIEW)
+            }
         )
 
 
@@ -71,41 +85,52 @@ private fun Footer() {
         ) {
             IconsWithText(
                 icon = R.drawable.share,
-                text = "7"
+                text = statisticItems.getItemByType(StatisticType.SHARES).count.toString(),
+                onClick = {
+
+                    onClick.invoke(StatisticType.SHARES)
+                }
             )
 
             IconsWithText(
                 icon = R.drawable.comment,
-                text = "8"
+                text = statisticItems.getItemByType(StatisticType.COMMENTS).count.toString(),
+                onClick = {
+
+                    onClick.invoke(StatisticType.COMMENTS)
+                }
             )
 
             IconsWithText(
                 icon = R.drawable.heart,
-                text = "23"
+                text = statisticItems.getItemByType(StatisticType.LIKES).count.toString(),
+                onClick = {
+
+                    onClick.invoke(StatisticType.LIKES)
+                }
             )
 
         }
-
-
     }
 }
 
+
 @Composable
-private fun Body(painter: Painter? = null) {
-    Column() {
-        Text(stringResource(R.string.template_text))
+private fun Body(post: FeedPost) {
+    Column {
+        Text(post.contentText)
         Spacer(modifier = Modifier.height(4.dp))
         AppImage(
             contentScale = ContentScale.FillWidth,
-            painter = painter,
-            data = "https://plus.unsplash.com/premium_photo-1698405202949-1313de4a437d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1640"
+            modifier = Modifier.height(200.dp),
+            data = post.contentImage,
         )
     }
 }
 
 
 @Composable
-private fun Header(painter: Painter? = null) {
+private fun Header(post: FeedPost) {
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -114,20 +139,19 @@ private fun Header(painter: Painter? = null) {
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape),
-            data = "https://images.unsplash.com/photo-1578589385251-045f05a6faa5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1760",
-            painter = painter,
+            data = post.avatar,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column(
             modifier = Modifier.weight(1F)
         ) {
             Text(
-                "/dev/null",
+                post.communityName,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                LocalTime.now().toString(),
+                post.publicationDate,
                 color = MaterialTheme.colorScheme.onBackground,
             )
         }
@@ -151,10 +175,13 @@ private fun Header(painter: Painter? = null) {
 private fun IconsWithText(
     icon: Int,
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier.clickable {
+            onClick()
+        }
     ) {
         Icon(
             modifier = Modifier.size(24.dp),
@@ -172,32 +199,30 @@ private fun IconsWithText(
 
 }
 
-@Preview
-@Composable
-private fun PostCardPreviewLight() {
-    FirstJComposeProjectTheme(darkTheme = false) {
-        PostCard(
-            painter = painterResource(
-                R.drawable.usgs_an18
-            )
-        )
-    }
-}
-
-
-@Preview
-@Composable
-private fun PostCardPreviewDark() {
-
-    FirstJComposeProjectTheme(darkTheme = true) {
-        PostCard(
-            painter = painterResource(
-                R.drawable.usgs_an18
-            )
-        )
-    }
-
-}
+//@Preview
+//@Composable
+//private fun PostCardPreviewLight() {
+//    FirstJComposeProjectTheme(darkTheme = false) {
+//        PostCard(
+//
+//        )
+//    }
+//}
+//
+//
+//@Preview
+//@Composable
+//private fun PostCardPreviewDark() {
+//
+//    FirstJComposeProjectTheme(darkTheme = true) {
+//        PostCard(
+//            painter = painterResource(
+//                R.drawable.usgs_an18
+//            )
+//        )
+//    }
+//
+//}
 
 
 
