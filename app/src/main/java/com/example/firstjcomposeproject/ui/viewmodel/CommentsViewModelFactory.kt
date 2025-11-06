@@ -1,13 +1,14 @@
-package com.example.firstjcomposeproject
+package com.example.firstjcomposeproject.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.firstjcomposeproject.domein.FeedPost
 
 class CommentsViewModelFactory(
-    private val postId: Int,
+    private val post: FeedPost,
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CommentsViewModel(postId) as T
+        return CommentsViewModel(post) as T
     }
 }

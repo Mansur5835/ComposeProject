@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
+    id("vkid.manifest.placeholders")
 }
 
 android {
@@ -17,6 +18,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+//        addManifestPlaceholders(
+//            mapOf(
+//                "VKIDClientID" to "54292720", // ID вашего приложения (app_id).
+//                "VKIDClientSecret" to "DfmOVpC6mv1nCcVpvCFi", // Ваш защищенный ключ (client_secret).
+//                "VKIDRedirectHost" to "vk.ru", // Обычно используется vk.ru.
+//                "VKIDRedirectScheme" to "vk54292720",
+//            )
+//        )
+
     }
 
     buildTypes {
@@ -31,12 +43,19 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         compose = true
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+        }
     }
 }
 
@@ -63,4 +82,15 @@ dependencies {
 
     implementation("com.vk:android-sdk-core:4.1.0")
     implementation("com.vk:android-sdk-api:4.1.0")
+
+
+    // network
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.3.0")
+
+
+    implementation("com.vk.id:vkid:2.0.0")
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }

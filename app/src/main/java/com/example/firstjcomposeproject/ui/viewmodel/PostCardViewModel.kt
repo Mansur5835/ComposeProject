@@ -1,16 +1,14 @@
-package com.example.firstjcomposeproject
+package com.example.firstjcomposeproject.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firstjcomposeproject.data.mapper.NewsFeedMapper
+import com.example.firstjcomposeproject.data.nerwork.ApiFactory
+import com.example.firstjcomposeproject.data.repository.NewsFeedRepository
 import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.PostComment
 import com.example.firstjcomposeproject.domein.StatisticItem
 import com.example.firstjcomposeproject.domein.StatisticType
+import com.vk.id.VKID
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +18,8 @@ import kotlinx.coroutines.launch
 
 class PostCardViewModel : ViewModel() {
 
+    private val repository = NewsFeedRepository()
+
 
     private val _uiState = MutableStateFlow<PostCardState>(PostCardState.Initial)
     val uiState = _uiState.asStateFlow()
@@ -28,16 +28,6 @@ class PostCardViewModel : ViewModel() {
     private val _event = MutableSharedFlow<PostCardEvent>()
     val event = _event.asSharedFlow()
 
-
-    private var feedPosts = mutableListOf<FeedPost>().apply {
-        repeat(10) {
-            add(
-                FeedPost(
-                    id = it
-                )
-            )
-        }
-    }
 
     init {
         loadPost()
@@ -51,38 +41,24 @@ class PostCardViewModel : ViewModel() {
     }
 
     private fun loadPost() {
-        _uiState.value = PostCardState.Loading
+        val token = VKID.instance.accessToken?.token
+
+        if (token == null) {
+            return
+        }
+
         viewModelScope.launch {
+            _uiState.value = PostCardState.Loading
             delay(1000)
+            val feedPosts = repository.loadRecommendations()
             _uiState.value = PostCardState.Loaded(feedPosts)
-
         }
+
     }
 
 
-    fun countUpStatistic(post: FeedPost, type: StatisticType) {
-        val modifiedList = (_uiState.value as PostCardState.Loaded).posts.toMutableList()
-        val modifiedStatistics = post.statisticItems.toMutableList()
-
-        val newPost = post.copy(
-            statisticItems = modifiedStatistics.apply {
-                replaceAll {
-                    if (it.type == type) it.copy(count = it.count + 1) else it
-                }
-            }
-        )
-
-        val newPosts = modifiedList.apply {
-            replaceAll {
-                if (post.id == it.id) newPost else it
-            }
-        }
 
 
-        _uiState.value = PostCardState.Loaded(newPosts)
-
-
-    }
 
     fun delete(post: FeedPost) {
         val modifiedList = (_uiState.value as PostCardState.Loaded).posts.toMutableList()
@@ -90,6 +66,16 @@ class PostCardViewModel : ViewModel() {
         modifiedList.removeIf { it.id == post.id }
         println("old post $modifiedList")
         _uiState.value = PostCardState.Loaded(modifiedList)
+    }
+
+
+    fun changeLikeStatus(post: FeedPost) {
+        viewModelScope.launch {
+            repository.changeLikeStatus(post)
+            val items = repository.feedPosts
+            println("asdfasdfsdf-> ${items.first().isFavorite}")
+            _uiState.value = PostCardState.Loaded(items.toList())
+        }
     }
 
 }

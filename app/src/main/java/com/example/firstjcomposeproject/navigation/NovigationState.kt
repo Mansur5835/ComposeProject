@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 class NavigationState(val navHostController: NavHostController) {
-
     fun navigateTo(route: String) {
         navHostController.navigate(route) {
             launchSingleTop = true

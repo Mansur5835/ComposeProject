@@ -1,6 +1,5 @@
 package com.example.firstjcomposeproject.ui.screens
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.firstjcomposeproject.CommentsState
-import com.example.firstjcomposeproject.CommentsViewModel
-import com.example.firstjcomposeproject.CommentsViewModelFactory
+import com.example.firstjcomposeproject.ui.viewmodel.CommentsState
+import com.example.firstjcomposeproject.ui.viewmodel.CommentsViewModel
+import com.example.firstjcomposeproject.ui.viewmodel.CommentsViewModelFactory
 import com.example.firstjcomposeproject.domein.FeedPost
 import com.example.firstjcomposeproject.domein.PostComment
 import com.example.firstjcomposeproject.ui.views.AppImage
@@ -46,7 +44,7 @@ import com.example.firstjcomposeproject.ui.views.AppImage
 fun CommentsScreen(
     feedPost: FeedPost,
     viewModel: CommentsViewModel = viewModel(
-        factory = CommentsViewModelFactory(feedPost.id)
+        factory = CommentsViewModelFactory(feedPost)
     ),
     popBack: () -> Unit
 ) {

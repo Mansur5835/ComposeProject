@@ -1,45 +1,25 @@
 package com.example.firstjcomposeproject.navigation
 
-import android.annotation.SuppressLint
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import androidx.navigation.navigation
-import com.example.firstjcomposeproject.PostCardViewModel
-import com.example.firstjcomposeproject.ui.screens.CommentsScreen
-import com.example.firstjcomposeproject.ui.screens.FavouriteScreen
-import com.example.firstjcomposeproject.ui.screens.HomeScreen
-import com.example.firstjcomposeproject.ui.screens.ProfileScreen
+import com.example.firstjcomposeproject.ui.viewmodel.AuthState
+import com.example.firstjcomposeproject.ui.viewmodel.MainViewModel
+import com.example.firstjcomposeproject.ui.screens.SplashScreen
 
-@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun AppNavGraph(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
+    viewModel: MainViewModel = viewModel()
 ) {
-    NavHost(
-        modifier = modifier,
-        navController = navController,
-        startDestination = Screen.HomeScreenGraph.route
-    ) {
-        homeScreenNavGraph(
-            navController
-        )
-
-        composable(Screen.Favourite.route) {
-            FavouriteScreen()
+    val state by viewModel.authState.collectAsState()
+    when (state) {
+        AuthState.Authorized -> MainNavGraph()
+        AuthState.Initial -> SplashScreen()
+        AuthState.NotAuthorized -> AuthNavGraph{
+            viewModel.performAuthResult(it)
         }
-        composable(Screen.Profile.route) {
-            ProfileScreen()
-        }
-
-
     }
+
 }
 

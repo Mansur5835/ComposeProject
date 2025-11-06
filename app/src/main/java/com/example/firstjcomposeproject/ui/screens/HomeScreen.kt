@@ -1,7 +1,5 @@
 package com.example.firstjcomposeproject.ui.screens
 
-import androidx.activity.compose.BackHandler
-import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,9 +31,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,17 +39,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.firstjcomposeproject.PostCardEvent
-import com.example.firstjcomposeproject.PostCardState
-import com.example.firstjcomposeproject.PostCardViewModel
+import com.example.firstjcomposeproject.ui.viewmodel.PostCardEvent
+import com.example.firstjcomposeproject.ui.viewmodel.PostCardState
+import com.example.firstjcomposeproject.ui.viewmodel.PostCardViewModel
 import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.PostComment
 import com.example.firstjcomposeproject.domein.StatisticType
-import com.example.firstjcomposeproject.navigation.Screen
-import com.example.firstjcomposeproject.navigation.rememberNavigationState
 import com.example.firstjcomposeproject.ui.views.PostCard
 import kotlinx.coroutines.launch
-import kotlin.getValue
 
 
 @Composable
@@ -98,9 +90,11 @@ fun HomeScreen(
                     viewModel.delete(post)
                 },
                 onClick = { post, type ->
+
+                    println("\nasdfasdf-> ${post.id}\n${post.isFavorite}\n")
                     when (type) {
                         StatisticType.VIEW -> {
-                            viewModel.countUpStatistic(post, type)
+//                            viewModel.countUpStatistic(post, type)
                         }
 
                         StatisticType.COMMENTS -> {
@@ -108,11 +102,11 @@ fun HomeScreen(
                         }
 
                         StatisticType.SHARES -> {
-                            viewModel.countUpStatistic(post, type)
+//                            viewModel.countUpStatistic(post, type)
                         }
 
                         StatisticType.LIKES -> {
-                            viewModel.countUpStatistic(post, type)
+                            viewModel.changeLikeStatus(post)
                         }
                     }
 
