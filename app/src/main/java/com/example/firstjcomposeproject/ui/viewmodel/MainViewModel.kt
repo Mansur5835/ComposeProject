@@ -7,8 +7,9 @@ import com.vk.id.AccessToken
 import com.vk.id.VKID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+class MainViewModel @Inject  constructor() : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Initial)
     val authState = _authState.asStateFlow()
 

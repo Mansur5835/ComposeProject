@@ -5,13 +5,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.firstjcomposeproject.domein.FeedPost
+import com.example.firstjcomposeproject.domein.entity.FeedPost
 import com.example.firstjcomposeproject.ui.screens.CommentsScreen
 import com.example.firstjcomposeproject.ui.screens.HomeScreen
+import com.example.firstjcomposeproject.ui.viewmodel.ViewModelFactory
 
 
 fun NavGraphBuilder.homeScreenNavGraph(
-    navController: NavController
+    navController: NavController,
+    viewModelFactory: ViewModelFactory,
 ) {
     navigation(
         Screen.HomeScreen.route,
@@ -19,6 +21,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
     ) {
         composable(Screen.HomeScreen.route) {
             HomeScreen(
+                viewModelFactory,
                 navigateComments = {
                     navController.navigate(Screen.Comments.createRoute(it))
                 }
@@ -32,6 +35,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                 it.arguments?.getParcelable<FeedPost>("feedPost")
                     ?: throw RuntimeException("feedPost args is null")
             CommentsScreen(
+                viewModelFactory,
                 feedPost = feedPost,
                 popBack = {
                     navController.popBackStack()

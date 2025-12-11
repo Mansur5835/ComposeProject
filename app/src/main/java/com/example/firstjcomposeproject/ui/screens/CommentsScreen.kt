@@ -33,18 +33,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firstjcomposeproject.ui.viewmodel.CommentsState
 import com.example.firstjcomposeproject.ui.viewmodel.CommentsViewModel
-import com.example.firstjcomposeproject.ui.viewmodel.CommentsViewModelFactory
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.PostComment
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.PostComment
+import com.example.firstjcomposeproject.ui.viewmodel.ViewModelFactory
 import com.example.firstjcomposeproject.ui.views.AppImage
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
+    viewModelFactory: ViewModelFactory,
     feedPost: FeedPost,
     viewModel: CommentsViewModel = viewModel(
-        factory = CommentsViewModelFactory(feedPost)
+        factory = viewModelFactory,
     ),
     popBack: () -> Unit
 ) {
@@ -140,20 +141,6 @@ private fun Item(comment: PostComment) {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

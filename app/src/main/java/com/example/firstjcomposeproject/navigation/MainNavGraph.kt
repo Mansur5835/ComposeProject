@@ -18,11 +18,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.firstjcomposeproject.ui.screens.FavouriteScreen
 import com.example.firstjcomposeproject.ui.screens.LoginScreen
 import com.example.firstjcomposeproject.ui.screens.ProfileScreen
+import com.example.firstjcomposeproject.ui.viewmodel.ViewModelFactory
 import com.example.firstjcomposeproject.ui.views.NavigationItem
 
 
 @Composable
-fun MainNavGraph(navController: NavHostController = rememberNavController()) {
+fun MainNavGraph(
+    navController: NavHostController = rememberNavController(),
+    viewModelFactory: ViewModelFactory,
+) {
     Scaffold(
         bottomBar = {
             BottomBar(
@@ -36,7 +40,8 @@ fun MainNavGraph(navController: NavHostController = rememberNavController()) {
             startDestination = Screen.HomeScreenGraph.route
         ) {
             homeScreenNavGraph(
-                navController
+                navController,
+                viewModelFactory,
             )
             composable(Screen.Favourite.route) {
                 FavouriteScreen()

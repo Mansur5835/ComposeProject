@@ -2,12 +2,14 @@ package com.example.firstjcomposeproject.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firstjcomposeproject.data.mapper.NewsFeedMapper
-import com.example.firstjcomposeproject.data.nerwork.ApiFactory
-import com.example.firstjcomposeproject.data.repository.NewsFeedRepository
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.StatisticItem
-import com.example.firstjcomposeproject.domein.StatisticType
+import com.example.firstjcomposeproject.data.repository.NewsFeedRepositoryImpl
+import com.example.firstjcomposeproject.domein.repository.NewsFeedRepository
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.StatisticItem
+import com.example.firstjcomposeproject.domein.entity.StatisticType
+import com.example.firstjcomposeproject.domein.usecase.ChangeFeedPostLikeStatusUseCase
+import com.example.firstjcomposeproject.domein.usecase.GetFeedPostsUseCase
+import com.example.firstjcomposeproject.domein.usecase.GetRecommendationsUseCase
 import com.vk.id.VKID
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,10 +17,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PostCardViewModel : ViewModel() {
-
-    private val repository = NewsFeedRepository()
+class PostCardViewModel @Inject constructor(
+    private val getRecommendationsUseCase: GetRecommendationsUseCase,
+    private val changeFeedPostLikeStatusUseCase: ChangeFeedPostLikeStatusUseCase,
+    private val getFeedPostsUseCase: GetFeedPostsUseCase
+) : ViewModel() {
 
 
     private val _uiState = MutableStateFlow<PostCardState>(PostCardState.Initial)
@@ -35,6 +40,7 @@ class PostCardViewModel : ViewModel() {
 
 
     fun showComments(post: FeedPost) {
+
         viewModelScope.launch {
             _event.emit(PostCardEvent.Post(post))
         }
@@ -50,14 +56,11 @@ class PostCardViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.value = PostCardState.Loading
             delay(1000)
-            val feedPosts = repository.loadRecommendations()
+            val feedPosts = getRecommendationsUseCase.invoke()
             _uiState.value = PostCardState.Loaded(feedPosts)
         }
 
     }
-
-
-
 
 
     fun delete(post: FeedPost) {
@@ -71,8 +74,8 @@ class PostCardViewModel : ViewModel() {
 
     fun changeLikeStatus(post: FeedPost) {
         viewModelScope.launch {
-            repository.changeLikeStatus(post)
-            val items = repository.feedPosts
+            changeFeedPostLikeStatusUseCase.invoke(post)
+            val items = getFeedPostsUseCase.invoke()
             println("asdfasdfsdf-> ${items.first().isFavorite}")
             _uiState.value = PostCardState.Loaded(items.toList())
         }

@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-10-30T11:55:14.561042Z">
+        <DropdownSelection timestamp="2025-12-09T10:27:36.566822Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/mansurgulomov/.android/avd/Redmi_note_11_API_29.avd" />

@@ -1,27 +1,20 @@
 package com.example.firstjcomposeproject.data.mapper
 
-import android.annotation.SuppressLint
 import com.example.firstjcomposeproject.data.model.NewsFeedResponseDto
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.PostComment
-import com.example.firstjcomposeproject.domein.StatisticItem
-import com.example.firstjcomposeproject.domein.StatisticType
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.PostComment
+import com.example.firstjcomposeproject.domein.entity.StatisticItem
+import com.example.firstjcomposeproject.domein.entity.StatisticType
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.Int
+import javax.inject.Inject
 import kotlin.random.Random
 
-class NewsFeedMapper {
+class NewsFeedMapper @Inject  constructor() {
     fun mapResponseToPosts(responseDto: NewsFeedResponseDto?): List<FeedPost> {
         val result = mutableListOf<FeedPost>()
-
-//        val posts = responseDto.newsFeedContentDto.posts
-//        val groups = responseDto.newsFeedContentDto.groups
-
-
         for (id in 1 until 100) {
-
             val feedPost = FeedPost(
                 id = id.toString(),
                 communityId = id.toString(),
@@ -56,14 +49,13 @@ class NewsFeedMapper {
 
             result.add(feedPost)
         }
-
-
         return result
-
     }
 
 
     fun mapResponseToComments(): List<PostComment> {
+
+
         val list = mutableListOf<PostComment>()
         for (id in 1 until 45) {
             list.add(
@@ -78,12 +70,11 @@ class NewsFeedMapper {
 
         }
         return list
-
     }
 
 
     private fun mapDateFormat(date: Date): String {
         return SimpleDateFormat("dd MMMM yyyy, hh:mm", Locale.getDefault()).format(date)
-
     }
+
 }

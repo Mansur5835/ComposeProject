@@ -1,4 +1,4 @@
-package com.example.firstjcomposeproject.domein
+package com.example.firstjcomposeproject.domein.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

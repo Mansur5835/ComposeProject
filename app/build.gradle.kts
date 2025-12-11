@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
     id("vkid.manifest.placeholders")
+    id("kotlin-kapt")
 }
 
 android {
@@ -93,4 +94,8 @@ dependencies {
     implementation("com.vk.id:vkid:2.0.0")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+
+
+    implementation("com.google.dagger:dagger:2.57.2")
+    kapt("com.google.dagger:dagger-compiler:2.57.2")
 }

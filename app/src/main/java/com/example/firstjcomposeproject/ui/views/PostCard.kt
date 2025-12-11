@@ -2,11 +2,9 @@ package com.example.firstjcomposeproject.ui.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,9 +28,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.firstjcomposeproject.R
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.StatisticItem
-import com.example.firstjcomposeproject.domein.StatisticType
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.StatisticItem
+import com.example.firstjcomposeproject.domein.entity.StatisticType
 import com.example.firstjcomposeproject.ui.viewmodel.getItemByType
 
 @Composable

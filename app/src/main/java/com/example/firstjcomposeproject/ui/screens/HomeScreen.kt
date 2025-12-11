@@ -42,15 +42,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.firstjcomposeproject.ui.viewmodel.PostCardEvent
 import com.example.firstjcomposeproject.ui.viewmodel.PostCardState
 import com.example.firstjcomposeproject.ui.viewmodel.PostCardViewModel
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.StatisticType
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.StatisticType
+import com.example.firstjcomposeproject.ui.viewmodel.ViewModelFactory
 import com.example.firstjcomposeproject.ui.views.PostCard
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun HomeScreen(
-    viewModel: PostCardViewModel = viewModel(),
+    viewModelFactory: ViewModelFactory,
+    viewModel: PostCardViewModel = viewModel(factory = viewModelFactory),
     navigateComments: (FeedPost) -> Unit,
 ) {
 

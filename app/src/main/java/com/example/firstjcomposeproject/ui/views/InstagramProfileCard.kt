@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.firstjcomposeproject.R
-import com.example.firstjcomposeproject.domein.InstagramModel
+import com.example.firstjcomposeproject.domein.entity.InstagramModel
 
 
 @Composable

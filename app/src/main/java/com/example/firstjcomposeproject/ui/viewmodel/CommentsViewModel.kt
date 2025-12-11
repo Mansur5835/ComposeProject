@@ -2,15 +2,20 @@ package com.example.firstjcomposeproject.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.firstjcomposeproject.data.repository.NewsFeedRepository
-import com.example.firstjcomposeproject.domein.FeedPost
-import com.example.firstjcomposeproject.domein.PostComment
+import com.example.firstjcomposeproject.data.repository.NewsFeedRepositoryImpl
+import com.example.firstjcomposeproject.domein.repository.NewsFeedRepository
+import com.example.firstjcomposeproject.domein.entity.FeedPost
+import com.example.firstjcomposeproject.domein.entity.PostComment
+import com.example.firstjcomposeproject.domein.usecase.GetCommentsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CommentsViewModel(post: FeedPost) : ViewModel() {
-    private val repository = NewsFeedRepository()
+class CommentsViewModel @Inject constructor(
+    private val post: FeedPost,
+    private val getCommentsUseCase: GetCommentsUseCase
+) : ViewModel() {
 
     private val _commentsState = MutableStateFlow<CommentsState>(CommentsState.Initial)
     val commentsState = _commentsState.asStateFlow()
@@ -23,7 +28,7 @@ class CommentsViewModel(post: FeedPost) : ViewModel() {
     private fun loadComments(post: FeedPost) {
 
         viewModelScope.launch {
-            val comments = repository.getComments(post)
+            val comments = getCommentsUseCase.invoke(post)
             _commentsState.value = CommentsState.Comments(comments)
         }
 

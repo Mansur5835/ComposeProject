@@ -1,4 +1,4 @@
-package com.example.firstjcomposeproject.domein
+package com.example.firstjcomposeproject.domein.entity
 
 
 data class PostComment(

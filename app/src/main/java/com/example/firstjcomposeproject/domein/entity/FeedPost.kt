@@ -1,4 +1,4 @@
-package com.example.firstjcomposeproject.domein
+package com.example.firstjcomposeproject.domein.entity
 
 import android.os.Build
 import android.os.Bundle
@@ -6,9 +6,6 @@ import android.os.Parcelable
 import androidx.navigation.NavType
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
-import kotlin.collections.listOf
-import kotlin.random.Random
-
 
 @Parcelize
 data class FeedPost(
